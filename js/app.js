@@ -1,0 +1,48 @@
+import {Pokemon, Attack} from "./modules/lib.mjs";
+
+
+
+const Pikachu = new Pokemon("Pikachu", 25, 40,6,"Electrique", 82, new Attack("Statik", 9), new Attack("Paratonnerre", 25));
+const Evoli = new Pokemon("Evoli", 133, 30,6.5,"Normal", 70, new Attack("Adaptabilité", 9), new Attack("Anticipation", 15));
+
+
+const pikachuStarts = !!Math.round(Math.random());
+
+const fighterOne = pikachuStarts ? Pikachu :Evoli;
+const fighterTwo = pikachuStarts ? Evoli: Pikachu;
+
+console.log("Le tirage au sort a décidé que " + fighterOne.getName() + " attaquait en premier.");
+console.log("---------------------------------------------------------------------------------");
+console.log(fighterOne.getName() + " a " + fighterOne.getMaxHealthPoint() + " points de vie.");
+console.log(fighterTwo.getName() + " a " + fighterTwo.getMaxHealthPoint() + " points de vie.");
+
+
+do {
+  const isCritOne = Math.random() < 0.1;
+  const isCritTwo = Math.random() < 0.1;
+
+  const attackOne = fighterOne.attack();
+  const attackTwo = fighterTwo.attack();
+
+  const realDamagesOne = isCritOne ? attackOne.getDamages() * 2 : attackOne.getDamages()
+  const realDamagesTwo = isCritTwo ? attackTwo.getDamages() * 2 : attackTwo.getDamages()
+
+  fighterTwo.removeHealthPoint(realDamagesOne);
+
+  console.log(fighterOne.getName() + " a attaqué. Il a fait " + realDamagesOne + " de dégâts.");
+
+  if(!fighterTwo.isAlive()) {
+    console.log("OMG " + fighterOne.getName() + " a gagné le combat. Il lui restait " + fighterOne.getCurrentHealthPoint() + " points de vie.");
+    break;
+  }
+
+  fighterOne.removeHealthPoint(realDamagesTwo);
+
+  console.log(fighterTwo.getName() + " a attaqué. Il a fait " + realDamagesTwo + ".");
+
+  if(!fighterOne.isAlive()) {
+    console.log("OMG " + fighterTwo.getName() + " a gagné le combat. Il lui restait " + fighterTwo.getCurrentHealthPoint());
+    break;
+  }
+
+} while (true);
